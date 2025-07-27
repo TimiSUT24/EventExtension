@@ -367,3 +367,5 @@ FodyWeavers.xsd
 /EventExtension/Data/eventsFBG.json
 /EventExtension/Data/SeedEvents.cs
 /EventExtension/EventExtension.http
+/EventExtension/Properties/launchSettings.json
+/EventExtension/appsettings.Development.json
