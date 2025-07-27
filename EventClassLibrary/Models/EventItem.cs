@@ -16,7 +16,7 @@ namespace EventClassLibrary.Models
         public string Location { get; set; } = string.Empty;
         public string Link { get; set; } = string.Empty;
         public string Img { get; set; } = string.Empty;
-        public string[] Categories { get; set; } = Array.Empty<string>();
+        public string[] Categories { get; set; } = [];
         public string Attendance { get; set; } = string.Empty;
         public string Ort { get; set; } = string.Empty;
 
