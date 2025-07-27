@@ -1,0 +1,6 @@
+@EventExtension_HostAddress = http://localhost:5195
+
+GET {{EventExtension_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
