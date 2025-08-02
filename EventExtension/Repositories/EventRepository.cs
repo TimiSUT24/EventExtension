@@ -9,7 +9,7 @@ namespace EventExtension.Repositories
     public class EventRepository : IEventRepository
     {
         private readonly EventDBContext _context;
-        
+
         public EventRepository(EventDBContext context)
         {
             _context = context;
@@ -38,7 +38,7 @@ namespace EventExtension.Repositories
 
         public async Task<IEnumerable<EventItem>> GetAllAsync()
         {
-           return await _context.Events.Include(e => e.EventDates).ToListAsync();
+            return await _context.Events.Include(e => e.EventDates).ToListAsync();
         }
 
         public Task<EventItem?> GetByIdAsync(int id)
@@ -54,6 +54,17 @@ namespace EventExtension.Repositories
         public Task UpdateAsync(EventItem entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task RemoveRange()
+        {
+            var events = await _context.Events.ToListAsync();
+            _context.Events.RemoveRange(events);
+
+        }       
+        public async Task AddRangeAsyncEvents(IEnumerable<EventItem> entity)
+        {
+            await _context.Events.AddRangeAsync(entity);          
         }
     }
 }

@@ -19,16 +19,13 @@ namespace EventExtension.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    Date = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Location = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Time = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Link = table.Column<string>(type: "text", nullable: false),
                     Img = table.Column<string>(type: "text", nullable: false),
                     Categories = table.Column<string[]>(type: "text[]", maxLength: 500, nullable: false),
                     Attendance = table.Column<string>(type: "text", nullable: false),
-                    Ort = table.Column<string>(type: "text", nullable: false),
-                    Year = table.Column<int>(type: "integer", nullable: false)
+                    Ort = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,8 +39,8 @@ namespace EventExtension.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EventId = table.Column<int>(type: "integer", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: true),
                     Time = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>

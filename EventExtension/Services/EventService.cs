@@ -2,6 +2,7 @@
 using EventClassLibrary.Models;
 using EventExtension.Repositories.Interfaces;
 using EventExtension.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventExtension.Services
 {
@@ -62,5 +63,40 @@ namespace EventExtension.Services
             });
 
         }
+
+        public async Task UploadEvents(IEnumerable<EventItemDto> events)
+        {
+            if (events == null || !events.Any())
+            {
+                throw new ArgumentException("Empty event list.");
+            }
+
+            await _eventRepository.RemoveRange();
+
+            var eventEntities = events.Select(e => new EventItem
+            {
+                Id = e.Id,
+                Title = e.Title,
+                Description = e.Description,
+                Location = e.Location,
+                Link = e.Link,
+                Img = e.Img,
+                Categories = e.Categories,
+                Attendance = e.Attendance,
+                Ort = e.Ort,
+                EventDates = e.Dates.Select(d => new EventDates
+                {
+                    Id = d.Id,
+                    StartDate = d.StartDate,
+                    EndDate = d.EndDate,
+                    Time = d.Time
+                }).ToList()
+            }).ToList();
+
+            await _eventRepository.AddRangeAsyncEvents(eventEntities);         
+            await _eventRepository.SaveChangesAsync();
+           
+        }
+       
     }
 }

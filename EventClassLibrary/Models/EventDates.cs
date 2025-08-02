@@ -10,7 +10,7 @@ namespace EventClassLibrary.Models
     {
         public int Id { get; set; }
         public int EventId { get; set; }
-        public EventItem EventItem { get; set; } = null!;
+        public EventItem? EventItem { get; set; }
         public DateOnly? StartDate { get; set; }
         public DateOnly? EndDate { get; set; }
         public string Time { get; set; } = string.Empty;

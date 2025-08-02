@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventExtension.Migrations
 {
     [DbContext(typeof(EventDBContext))]
-    [Migration("20250725190212_InitUpdate")]
-    partial class InitUpdate
+    [Migration("20250727215213_TestUpdate")]
+    partial class TestUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,14 +33,14 @@ namespace EventExtension.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateOnly?>("EndDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("EventId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateOnly?>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Time")
                         .IsRequired()

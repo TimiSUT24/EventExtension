@@ -1,5 +1,9 @@
 
+using EventClassLibrary.DTO;
+using EventClassLibrary.Models;
+using EventExtension.Data;
 using EventExtension.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventExtension.Controllers
@@ -9,9 +13,11 @@ namespace EventExtension.Controllers
     public class EventController : ControllerBase
     {   
         private readonly IEventService _eventService;
-        public EventController(IEventService eventService)
+        private readonly EventDBContext _context;
+        public EventController(IEventService eventService, EventDBContext context)
         {
             _eventService = eventService;
+            _context = context;
         }
 
         [HttpGet("GetAllEvents")]
@@ -34,6 +40,14 @@ namespace EventExtension.Controllers
                 return NotFound("No events found in the specified range.");
             }
             return Ok(events);
+        }
+        [AllowAnonymous]
+        [HttpPost("UploadEvents")]
+        public async Task<IActionResult> UploadEvents([FromBody] List<EventItemDto> events)
+        {        
+            await _eventService.UploadEvents(events);     
+
+            return Ok($"Uploaded and saved {events.Count} events.");
         }
 
     }
