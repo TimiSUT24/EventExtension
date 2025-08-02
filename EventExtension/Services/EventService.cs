@@ -1,5 +1,6 @@
 ﻿using EventClassLibrary.DTO;
 using EventClassLibrary.Models;
+using EventExtension.Mapper;
 using EventExtension.Repositories.Interfaces;
 using EventExtension.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -23,26 +24,9 @@ namespace EventExtension.Services
                 throw new Exception("No events found.");
             }
             
-            return events.Select(e => new EventItemDto
-            {
-                Id = e.Id,
-                Title = e.Title,
-                Description = e.Description,
-                Location = e.Location,
-                Link = e.Link,
-                Img = e.Img,
-                Categories = e.Categories,
-                Attendance = e.Attendance,
-                Ort = e.Ort,
-                Dates = e.EventDates.Select(ed => new EventDatesDto
-                {
-                    Id = ed.Id,
-                    StartDate = ed.StartDate,
-                    EndDate = ed.EndDate,
-                    Time = ed.Time
-                }).ToList()
-
-            });                 
+            var allEvents = events.Select(e => e.MapEventItemDto()).ToList();
+            return allEvents;
+                  
         }
 
         public async Task<IEnumerable<EventItemDto>> RemoveEventsRangeWithId(int id, int id2)
@@ -72,27 +56,9 @@ namespace EventExtension.Services
             }
 
             await _eventRepository.RemoveRange();
-
-            var eventEntities = events.Select(e => new EventItem
-            {
-                Id = e.Id,
-                Title = e.Title,
-                Description = e.Description,
-                Location = e.Location,
-                Link = e.Link,
-                Img = e.Img,
-                Categories = e.Categories,
-                Attendance = e.Attendance,
-                Ort = e.Ort,
-                EventDates = e.Dates.Select(d => new EventDates
-                {
-                    Id = d.Id,
-                    StartDate = d.StartDate,
-                    EndDate = d.EndDate,
-                    Time = d.Time
-                }).ToList()
-            }).ToList();
-
+                     
+            var eventEntities = events.Select(e => e.MapEventItem()).ToList();
+            
             await _eventRepository.AddRangeAsyncEvents(eventEntities);         
             await _eventRepository.SaveChangesAsync();
            
