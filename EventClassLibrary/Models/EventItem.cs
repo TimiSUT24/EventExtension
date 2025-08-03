@@ -20,6 +20,9 @@ namespace EventClassLibrary.Models
         public string Attendance { get; set; } = string.Empty;
         public string Ort { get; set; } = string.Empty;
 
+        public string? PublisherId { get; set; }
+        public ApplicationUser? Publisher { get; set; }
+
         [JsonPropertyName("dates")]
         public ICollection<EventDates> EventDates { get; set; } = new List<EventDates>();
     }

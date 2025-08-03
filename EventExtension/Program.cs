@@ -4,7 +4,10 @@ using EventExtension.Data;
 using EventExtension.Repositories;
 using EventExtension.Repositories.Interfaces;
 using EventExtension.Services;
+using EventExtension.Services.EventExtension.Services;
 using EventExtension.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System;
@@ -26,6 +29,7 @@ namespace EventExtension
 
             //Services
             builder.Services.AddScoped<IEventService, EventService>();
+            builder.Services.AddScoped<JWT_Service>();
 
             //Repositories
             builder.Services.AddScoped<IGenericRepository<EventItem>, EventRepository>();
@@ -35,6 +39,33 @@ namespace EventExtension
 
             builder.Services.AddDbContext<EventDBContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            //Identity 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<EventDBContext>()
+                .AddDefaultTokenProviders();
+
+            //Authentication
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(option =>
+                {
+                    option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                    };
+                });
+
+            builder.Services.AddAuthorization();
 
             //CORS
             builder.Services.AddCors(options =>
@@ -59,14 +90,23 @@ namespace EventExtension
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-
-            using (var scope = app.Services.CreateScope())
+            app.Use(async (context, next) =>
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<EventDBContext>();
-                await SeedEvents.SeedEvent(dbContext); 
-            }
+                if (context.Request.Path.StartsWithSegments("/Event/UploadEvents"))
+                {
+                    var apiKey = context.Request.Headers["X-API-KEY"].FirstOrDefault();
+                    if (apiKey != builder.Configuration["UploadEventsKey"])
+                    {
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync("Unauthorized");
+                        return;
+                    }
+                }
+                await next();
+            });
 
             await app.RunAsync();
         }

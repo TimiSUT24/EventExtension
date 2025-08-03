@@ -12,12 +12,10 @@ namespace EventExtension.Controllers
     [Route("[controller]")]
     public class EventController : ControllerBase
     {   
-        private readonly IEventService _eventService;
-        private readonly EventDBContext _context;
-        public EventController(IEventService eventService, EventDBContext context)
+        private readonly IEventService _eventService;      
+        public EventController(IEventService eventService)
         {
-            _eventService = eventService;
-            _context = context;
+            _eventService = eventService;        
         }
 
         [HttpGet("GetAllEvents")]
@@ -30,7 +28,7 @@ namespace EventExtension.Controllers
             }
             return Ok(events); 
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("RemoveEventsRangeWithId/{id}/{id2}")]
         public async Task<IActionResult> DeleteEventsWithinRange(int id, int id2)
         {
@@ -41,7 +39,7 @@ namespace EventExtension.Controllers
             }
             return Ok(events);
         }
-        [AllowAnonymous]
+       
         [HttpPost("UploadEvents")]
         public async Task<IActionResult> UploadEvents([FromBody] List<EventItemDto> events)
         {        
