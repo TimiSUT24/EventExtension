@@ -111,7 +111,13 @@ namespace EventExtension
                 await next();
             });
 
-            await app.RunAsync();
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<EventDBContext>();
+                db.Database.Migrate();
+            }
+
+                await app.RunAsync();
         }
     }
 }
