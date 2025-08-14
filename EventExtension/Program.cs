@@ -37,8 +37,15 @@ namespace EventExtension
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
+            var connectionString_supabase = Environment.GetEnvironmentVariable("Connectionstrings__Supabase");
+
+            if (string.IsNullOrEmpty(connectionString_supabase))
+            {
+                throw new Exception("Supabase connection string is not set in environment variables.");
+            }
+
             builder.Services.AddDbContext<EventDBContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("Connectionstrings__Supabase")));
+                options.UseNpgsql(connectionString_supabase));
 
             //Identity 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
