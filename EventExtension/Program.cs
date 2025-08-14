@@ -37,24 +37,11 @@ namespace EventExtension
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
-            var uri = new Uri(Environment.GetEnvironmentVariable("Connectionstrings__Supabase"));
-            var csBuilder = new Npgsql.NpgsqlConnectionStringBuilder()
-            {
-                Host = uri.Host,
-                Port = uri.Port,
-                Database = uri.AbsolutePath.TrimStart('/'),
-                Username = uri.UserInfo.Split(':')[0],
-                Password = uri.UserInfo.Split(':')[1],
-                SslMode = Npgsql.SslMode.Require,              
-            };
+        
+            var connectionString_supabase = Environment.GetEnvironmentVariable("Connectionstrings__Supabase");
 
             builder.Services.AddDbContext<EventDBContext>(options =>
-                options.UseNpgsql(csBuilder.ConnectionString));
-
-            /*var connectionString_supabase = Environment.GetEnvironmentVariable("Connectionstrings__Supabase");
-
-            builder.Services.AddDbContext<EventDBContext>(options =>
-                options.UseNpgsql(connectionString_supabase));*/
+                options.UseNpgsql(connectionString_supabase));
 
             //Identity 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
