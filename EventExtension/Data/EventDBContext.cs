@@ -8,12 +8,13 @@ namespace EventExtension.Data
     {
         public EventDBContext(DbContextOptions<EventDBContext> options) : base(options)
         {
-
         }
 
         public DbSet<EventItem> Events { get; set; }
         public DbSet<EventDates> EventDate { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -44,6 +45,8 @@ namespace EventExtension.Data
                 .WithMany(u => u.PublishedEvents)
                 .HasForeignKey(e => e.PublisherId)
                 .OnDelete(DeleteBehavior.Restrict);  
+
+
 
         }
     }

@@ -20,9 +20,9 @@ namespace EventExtension
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            
             // Add services to the container.
-     
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddOpenApi();
@@ -38,7 +38,7 @@ namespace EventExtension
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
             builder.Services.AddDbContext<EventDBContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("Supabase")));
 
             //Identity 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
