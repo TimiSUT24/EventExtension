@@ -39,11 +39,6 @@ namespace EventExtension
 
             var connectionString_supabase = Environment.GetEnvironmentVariable("Connectionstrings__Supabase");
 
-            if (string.IsNullOrEmpty(connectionString_supabase))
-            {
-                throw new Exception("Supabase connection string is not set in environment variables.");
-            }
-
             builder.Services.AddDbContext<EventDBContext>(options =>
                 options.UseNpgsql(connectionString_supabase));
 
