@@ -38,7 +38,7 @@ namespace EventExtension
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
             builder.Services.AddDbContext<EventDBContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("Supabase")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("Connectionstrings__Supabase")));
 
             //Identity 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
