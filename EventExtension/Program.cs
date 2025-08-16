@@ -75,7 +75,8 @@ namespace EventExtension
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173")
+                    policy.WithOrigins("http://localhost:5173",
+                        "chrome-extension://idgcoccogffplcakdckcmjmdpgekpmfp")
                     .AllowAnyHeader()
                     .AllowAnyMethod();                   
 
