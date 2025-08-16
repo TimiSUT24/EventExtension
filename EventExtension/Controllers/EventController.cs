@@ -28,6 +28,13 @@ namespace EventExtension.Controllers
             }
             return Ok(events); 
         }
+
+        [HttpGet("Ping")]
+        public async Task<IActionResult> Ping()
+        {
+            return Ok("Pong"); 
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpDelete("RemoveEventsRangeWithId/{id}/{id2}")]
         public async Task<IActionResult> DeleteEventsWithinRange(int id, int id2)
