@@ -8,9 +8,11 @@ using EventExtension.Services.EventExtension.Services;
 using EventExtension.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System;
+using System.Threading.RateLimiting;
 using System.Threading.Tasks;
 
 namespace EventExtension
@@ -70,6 +72,18 @@ namespace EventExtension
 
             builder.Services.AddAuthorization();
 
+            // Endpoint rate limiting
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("fixed", opt =>
+                {
+                    opt.PermitLimit = 5;
+                    opt.Window = TimeSpan.FromSeconds(10);
+                    opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                    opt.QueueLimit = 0;
+                });
+            });
+
             //CORS
             builder.Services.AddCors(options =>
             {
@@ -96,10 +110,14 @@ namespace EventExtension
                 app.MapScalarApiReference();
             }
 
+            // Enable Rate Limiting
+            app.UseRateLimiter();
+
+
             //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapControllers();
+            app.MapControllers().RequireRateLimiting("fixed");
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path.StartsWithSegments("/Event/UploadEvents"))
