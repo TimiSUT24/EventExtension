@@ -369,3 +369,4 @@ FodyWeavers.xsd
 /EventExtension/EventExtension.http
 /EventExtension/Properties/launchSettings.json
 /EventExtension/appsettings.Development.json
+/EventExtension/Dockerfile
