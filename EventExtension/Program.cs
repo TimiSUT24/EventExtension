@@ -77,7 +77,7 @@ namespace EventExtension
             {
                 options.AddFixedWindowLimiter("fixed", opt =>
                 {
-                    opt.PermitLimit = 5;
+                    opt.PermitLimit = 8;
                     opt.Window = TimeSpan.FromSeconds(10);
                     opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                     opt.QueueLimit = 0;
