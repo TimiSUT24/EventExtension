@@ -40,10 +40,10 @@ namespace EventExtension
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
         
-            var connectionString_supabase = Environment.GetEnvironmentVariable("Connectionstrings__Supabase");
+            var connectionString_neon = Environment.GetEnvironmentVariable("Connectionstrings__Neon");
 
             builder.Services.AddDbContext<EventDBContext>(options =>
-                options.UseNpgsql(connectionString_supabase));
+                options.UseNpgsql(connectionString_neon));
 
             //Identity 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -131,13 +131,7 @@ namespace EventExtension
                     }
                 }
                 await next();
-            });
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<EventDBContext>();
-                db.Database.Migrate();
-            }
+            });         
 
                 await app.RunAsync();
         }
