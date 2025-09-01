@@ -25,14 +25,6 @@ namespace EventExtension.Services
             }
 
             return _cachedEvents;
-           /* var events = await _eventRepository.GetAllAsync();
-            if(events == null || !events.Any())
-            {
-                throw new Exception("No events found.");
-            }
-            
-            var allEvents = events.Select(e => e.MapEventItemDto()).ToList();
-            return allEvents;*/
                   
         }
 
