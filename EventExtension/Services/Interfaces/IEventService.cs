@@ -9,5 +9,6 @@ namespace EventExtension.Services.Interfaces
         Task<IEnumerable<EventItemDto>> RemoveEventsRangeWithId(int id, int id2);
 
         Task UploadEvents(IEnumerable<EventItemDto> events);
+        Task RefreshEvents();
     }
 }
