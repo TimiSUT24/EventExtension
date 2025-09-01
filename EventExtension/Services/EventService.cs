@@ -10,6 +10,7 @@ namespace EventExtension.Services
     public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
+        private List<EventItemDto> _cachedEvents = new(); 
 
         public EventService(IEventRepository eventRepository)
         {
@@ -18,15 +19,27 @@ namespace EventExtension.Services
 
         public async Task<IEnumerable<EventItemDto>> GetAllEvents()
         {
-            var events = await _eventRepository.GetAllAsync();
+            if (_cachedEvents == null || !_cachedEvents.Any())
+            {
+                await RefreshEvents();
+            }
+
+            return _cachedEvents;
+           /* var events = await _eventRepository.GetAllAsync();
             if(events == null || !events.Any())
             {
                 throw new Exception("No events found.");
             }
             
             var allEvents = events.Select(e => e.MapEventItemDto()).ToList();
-            return allEvents;
+            return allEvents;*/
                   
+        }
+
+        public async Task RefreshEvents()
+        {
+            var events = await _eventRepository.GetAllAsync();
+            _cachedEvents = events.Select(e => e.MapEventItemDto()).ToList();
         }
 
         public async Task<IEnumerable<EventItemDto>> RemoveEventsRangeWithId(int id, int id2)
@@ -63,6 +76,6 @@ namespace EventExtension.Services
             await _eventRepository.SaveChangesAsync();
            
         }
-       
+      
     }
 }
