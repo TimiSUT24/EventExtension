@@ -26,7 +26,7 @@ namespace EventExtension.Services
                     nextRun = nextRun.AddDays(1);
                 }
                 var delay = nextRun - now; //How long until next run 
-                Console.WriteLine($"Next cache refresh scheduled at: {nextRun} (in {delay.TotalHours} minutes)");
+                Console.WriteLine($"Next cache refresh scheduled at: {nextRun} (in {delay.TotalHours} hours)");
 
                 try
                 {
