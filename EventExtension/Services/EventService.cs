@@ -26,6 +26,7 @@ namespace EventExtension.Services
         {
             var events = await _eventRepository.GetAllAsync();
             _cachedEvents = events.Select(e => e.MapEventItemDto()).ToList();
+            Console.WriteLine($"Event cache refreshed. Total events cached: {_cachedEvents.Count}");
         }
 
         public async Task<IEnumerable<EventItemDto>> RemoveEventsRangeWithId(int id, int id2)

@@ -30,7 +30,7 @@ namespace EventExtension
             builder.Services.AddOpenApi();
 
             //Services
-            builder.Services.AddScoped<IEventService, EventService>();
+            builder.Services.AddSingleton<IEventService, EventService>();
             builder.Services.AddScoped<JWT_Service>();
             builder.Services.AddHostedService<DailyEventCacheRefresh>();
 
