@@ -14,6 +14,12 @@ namespace EventExtension.Services
         {
             var swedishTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Stockholm"); //Swedish timezone
 
+            using(var scope = _serviceProvider.CreateScope())
+            {
+                var eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
+                await eventService.RefreshEvents(); //Initial cache refresh on startup
+            }
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 // Convert to swedish time 

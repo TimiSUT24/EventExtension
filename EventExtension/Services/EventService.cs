@@ -17,15 +17,9 @@ namespace EventExtension.Services
             _eventRepository = eventRepository;
         }
 
-        public async Task<IEnumerable<EventItemDto>> GetAllEvents()
+        public Task<IEnumerable<EventItemDto>> GetAllEvents()
         {
-            if (_cachedEvents == null || !_cachedEvents.Any())
-            {
-                await RefreshEvents();
-            }
-
-            return _cachedEvents;
-                  
+            return Task.FromResult<IEnumerable<EventItemDto>>(_cachedEvents);
         }
 
         public async Task RefreshEvents()
