@@ -17,7 +17,17 @@ namespace EventExtension.Services
             using(var scope = _serviceProvider.CreateScope())
             {
                 var eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
-                await eventService.RefreshEvents(); //Initial cache refresh on startup
+                var cachedEvents = await eventService.GetAllEvents();
+
+                if (cachedEvents == null || !cachedEvents.Any())
+                {
+                    Console.WriteLine("Initial cache is empty, performing first-time refresh.");
+                    await eventService.RefreshEvents();
+                }
+                else
+                {
+                    Console.WriteLine($"Initial cache loaded with {cachedEvents.Count()} events.");
+                }
             }
 
             while (!stoppingToken.IsCancellationRequested)
@@ -47,7 +57,8 @@ namespace EventExtension.Services
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
-                    await eventService.RefreshEvents(); 
+                    await eventService.RefreshEvents();
+                    Console.WriteLine("Event refreshed from db");
                 }              
             }
         }

@@ -21,7 +21,8 @@ namespace EventExtension.Services
             if (File.Exists(_backUpFilePath))
             {
                 var json = File.ReadAllText(_backUpFilePath);
-                _cachedEvents = JsonSerializer.Deserialize<List<EventItemDto>>(json) ?? new List<EventItemDto>(); 
+                _cachedEvents = JsonSerializer.Deserialize<List<EventItemDto>>(json) ?? new List<EventItemDto>();
+                Console.WriteLine("Loaded events from backup JSON file");
             }
     
         }
