@@ -3,6 +3,7 @@ using EventClassLibrary.DTO;
 using EventClassLibrary.Models;
 using EventExtension.Data;
 using EventExtension.Services.Interfaces;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,9 +31,9 @@ namespace EventExtension.Controllers
         }
 
         [HttpGet("Ping")]
-        public async Task<IActionResult> Ping()
+        public Task<IActionResult> Ping()
         {
-            return Ok("Pong"); 
+             return Task.FromResult<IActionResult>(Ok("Pong"));
         }
 
         [Authorize(Roles = "Admin")]

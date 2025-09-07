@@ -4,17 +4,26 @@ using EventExtension.Mapper;
 using EventExtension.Repositories.Interfaces;
 using EventExtension.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace EventExtension.Services
 {
     public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
-        private List<EventItemDto> _cachedEvents = new(); 
+        private List<EventItemDto> _cachedEvents = new();
+        private readonly string _backUpFilePath = Path.Combine(AppContext.BaseDirectory, "event_backup.json"); 
 
         public EventService(IEventRepository eventRepository)
         {
             _eventRepository = eventRepository;
+
+            if (File.Exists(_backUpFilePath))
+            {
+                var json = File.ReadAllText(_backUpFilePath);
+                _cachedEvents = JsonSerializer.Deserialize<List<EventItemDto>>(json) ?? new List<EventItemDto>(); 
+            }
+    
         }
 
         public Task<IEnumerable<EventItemDto>> GetAllEvents()
@@ -24,9 +33,20 @@ namespace EventExtension.Services
 
         public async Task RefreshEvents()
         {
-            var events = await _eventRepository.GetAllAsync();
-            _cachedEvents = events.Select(e => e.MapEventItemDto()).ToList();
-            Console.WriteLine($"Event cache refreshed. Total events cached: {_cachedEvents.Count}");
+            try
+            {
+                var events = await _eventRepository.GetAllAsync();
+                _cachedEvents = events.Select(e => e.MapEventItemDto()).ToList();
+                Console.WriteLine($"Event cache refreshed. Total events cached: {_cachedEvents.Count}");
+
+                var json = JsonSerializer.Serialize(_cachedEvents, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(_backUpFilePath, json);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"[EventService] Db refresh failed, using backup. Error: {ex.Message}");
+            }
+            
         }
 
         public async Task<IEnumerable<EventItemDto>> RemoveEventsRangeWithId(int id, int id2)
