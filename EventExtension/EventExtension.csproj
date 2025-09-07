@@ -42,4 +42,10 @@
     <ProjectReference Include="..\EventClassLibrary\EventClassLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="event_backup.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
