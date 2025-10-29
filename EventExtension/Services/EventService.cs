@@ -12,7 +12,7 @@ namespace EventExtension.Services
     {
         private readonly IEventRepository _eventRepository;
         private List<EventItemDto> _cachedEvents = new();
-        private readonly string _backUpFilePath = Path.Combine(AppContext.BaseDirectory, "event_backup.json"); 
+        private readonly string _backUpFilePath = Path.Combine("/data", "event_backup.json"); 
 
         public EventService(IEventRepository eventRepository)
         {
