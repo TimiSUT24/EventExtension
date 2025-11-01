@@ -93,8 +93,8 @@ namespace EventExtension
                 {
                     policy.WithOrigins("http://localhost:5173",
                         "chrome-extension://idgcoccogffplcakdckcmjmdpgekpmfp")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();                   
+                    .WithMethods("GET", "POST", "PUT", "DELETE")
+                    .WithHeaders("X-API-KEY", "Content-Type");
 
                 });
             });
@@ -124,7 +124,7 @@ namespace EventExtension
             app.UseRateLimiter();
 
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers().RequireRateLimiting("fixed");
