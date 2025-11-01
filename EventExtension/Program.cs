@@ -9,6 +9,7 @@ using EventExtension.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System;
@@ -97,7 +98,15 @@ namespace EventExtension
 
                 });
             });
-    
+
+            builder.Services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+            });
+        
+
             var app = builder.Build();
 
             var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
@@ -110,7 +119,7 @@ namespace EventExtension
                 app.MapOpenApi();
                 app.MapScalarApiReference();
             }
-
+            app.UseResponseCompression();
             // Enable Rate Limiting
             app.UseRateLimiter();
 
