@@ -97,15 +97,7 @@ namespace EventExtension
                     .WithHeaders("X-API-KEY", "Content-Type");
 
                 });
-            });
-
-            builder.Services.AddResponseCompression(options =>
-            {
-                options.EnableForHttps = true;
-                options.Providers.Add<BrotliCompressionProvider>();
-                options.Providers.Add<GzipCompressionProvider>();
-            });
-        
+            });       
 
             var app = builder.Build();
 
@@ -123,8 +115,7 @@ namespace EventExtension
             {
                 ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
             });
-
-            app.UseResponseCompression();          
+         
             // Enable Rate Limiting
             app.UseRateLimiter();
 
