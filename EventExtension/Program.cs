@@ -110,7 +110,7 @@ namespace EventExtension
             var app = builder.Build();
 
             var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-            app.Urls.Add($"https://*:{port}");
+            app.Urls.Add($"http://*:{port}");
 
             app.UseCors();
             // Configure the HTTP request pipeline.
@@ -119,7 +119,12 @@ namespace EventExtension
                 app.MapOpenApi();
                 app.MapScalarApiReference();
             }
-            app.UseResponseCompression();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+            });
+
+            app.UseResponseCompression();          
             // Enable Rate Limiting
             app.UseRateLimiter();
 
