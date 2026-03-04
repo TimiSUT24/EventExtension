@@ -1,0 +1,47 @@
+[33m06ec021[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge repos into one
+[33m54d2933[m remove responsecompression becayse didnt do anything
+[33m5f8c4cf[m remove https render already handles that. Trying to use forwardedheaders to see if my compression works
+[33mc2e1900[m fix api not using https
+[33me622ec3[m testing
+[33m8ba58d3[m Add responseCompression to reduce size of responses using Brotli/Gzip.
+[33m7537bf6[m remove old caching problem
+[33m5d741c1[m fix to json file being empty
+[33m6b29d6e[m Improvements to DailyEventCacheRefresh class
+[33me3f7f3f[m Change so events gets backed up in a json to prevent db calls on restart
+[33me80022e[m fix cache resetting on every request
+[33m98340a9[m Change GetAllEvents method so it doesnt touch database when requested/ load cache on startup
+[33mcbd0802[m fix
+[33m3f0ff6c[m rewrite EventRefresh so it refreshes at a specific timezone
+[33m876c31e[m add DailyEventCacheRefresh as backgroundService that refreshes daily
+[33md4dfc27[m Rewrite GetAllEvents Method to work like cache and add RefreshEvents method
+[33m6521d3f[m remove auto migrate on startup
+[33me74d989[m rate limit  change
+[33mfe7000d[m Added rate limiting for endpoints
+[33m8cb453f[m add docker
+[33m7e8ac22[m gitignore
+[33m39706a3[m adding dockerfile again
+[33m5538c34[m test remove dockerfile
+[33m8e55b64[m add chrome id
+[33m0c69782[m add pint endpoint
+[33m2e0ac0f[m update
+[33m038e635[m update
+[33m02fdf88[m update
+[33m2e9a777[m update program.cs
+[33m4de1065[m update how we get connectionstring
+[33m8053cbf[m change connectionstring
+[33m72b8b80[m Update program.cs
+[33m645c167[m Update Docker
+[33m9bd287b[m add port to program.cs for render
+[33m527017f[m add docker
+[33m7abf6c4[m Create Migration
+[33md5e3dfb[m Update
+[33m457380c[m Added Identity for future plans
+[33m4256a5b[m Added mapper and implemented in service EventService class
+[33me7c92bf[m Added UploadEvents method
+[33m81eb83e[m remove files
+[33m4b68a4f[m Add LICENSE.txt.
+[33m1cbada6[m delete class
+[33m0ffda39[m Upload
+[33mfa2587c[m Upload
+[33mdd896a0[m Add project files.
+[33m2234204[m Add .gitattributes and .gitignore.
